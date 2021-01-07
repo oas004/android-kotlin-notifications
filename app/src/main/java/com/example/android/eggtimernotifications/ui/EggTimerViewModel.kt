@@ -26,7 +26,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.* // ktlint-disable no-wildcard-imports
 import com.example.android.eggtimernotifications.R
 import com.example.android.eggtimernotifications.receiver.AlarmReceiver
-import com.example.android.eggtimernotifications.util.sendNotification
 import kotlinx.coroutines.*
 
 // ktlint-disable no-wildcard-imports
@@ -119,11 +118,11 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
                     else -> timerLengthOptions[timerLengthSelection] * minute
                 }
                 val triggerTime = SystemClock.elapsedRealtime() + selectedInterval
-
-                val notificationManager = ContextCompat.getSystemService(app, NotificationManager::class.java) as NotificationManager
-                notificationManager.sendNotification(app.getString(R.string.timer_running), app)
-
-                // TODO: Step 1.15 call cancel notification
+                val notificationManager = ContextCompat.getSystemService(
+                    app,
+                    NotificationManager::class.java
+                ) as NotificationManager
+                notificationManager.cancelAll()
 
                 AlarmManagerCompat.setExactAndAllowWhileIdle(
                     alarmManager,
