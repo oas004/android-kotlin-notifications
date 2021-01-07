@@ -13,21 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package com.example.android.eggtimernotifications.ui
 
-import android.app.*
+import android.app.* // ktlint-disable no-wildcard-imports
 import android.content.Context
 import android.content.Intent
 import android.os.CountDownTimer
 import android.os.SystemClock
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.*
-import com.example.android.eggtimernotifications.receiver.AlarmReceiver
+import androidx.lifecycle.* // ktlint-disable no-wildcard-imports
 import com.example.android.eggtimernotifications.R
+import com.example.android.eggtimernotifications.receiver.AlarmReceiver
 import com.example.android.eggtimernotifications.util.sendNotification
 import kotlinx.coroutines.*
+
+// ktlint-disable no-wildcard-imports
+
+// ktlint-disable no-wildcard-imports
 
 class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
 
@@ -57,7 +61,6 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
     val isAlarmOn: LiveData<Boolean>
         get() = _alarmOn
 
-
     private lateinit var timer: CountDownTimer
 
     init {
@@ -77,11 +80,10 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
 
         timerLengthOptions = app.resources.getIntArray(R.array.minutes_array)
 
-        //If alarm is not null, resume the timer back for this alarm
+        // If alarm is not null, resume the timer back for this alarm
         if (_alarmOn.value!!) {
             createTimer()
         }
-
     }
 
     /**
@@ -113,12 +115,13 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
             if (!it) {
                 _alarmOn.value = true
                 val selectedInterval = when (timerLengthSelection) {
-                    0 -> second * 10 //For testing only
-                    else ->timerLengthOptions[timerLengthSelection] * minute
+                    0 -> second * 10 // For testing only
+                    else -> timerLengthOptions[timerLengthSelection] * minute
                 }
                 val triggerTime = SystemClock.elapsedRealtime() + selectedInterval
 
-                // TODO: Step 1.5 get an instance of NotificationManager and call sendNotification
+                val notificationManager = ContextCompat.getSystemService(app, NotificationManager::class.java) as NotificationManager
+                notificationManager.sendNotification(app.getString(R.string.timer_running), app)
 
                 // TODO: Step 1.15 call cancel notification
 
