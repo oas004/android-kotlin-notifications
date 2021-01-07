@@ -42,6 +42,13 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
     // this activity
     // TODO: Step 1.11 create intent
 
+    val builder = NotificationCompat.Builder(applicationContext, applicationContext.getString(R.string.egg_notification_channel_id))
+    builder.setSmallIcon(R.drawable.cooked_egg)
+            .setContentTitle(applicationContext.getString(R.string.notification_title))
+            .setContentText(messageBody)
+    notify(NOTIFICATION_ID, builder.build())
+    
+
     // TODO: Step 1.12 create PendingIntent
 
     // TODO: Step 2.0 add style
